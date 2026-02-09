@@ -1,0 +1,37 @@
+[ {
+  "lotId" : "L001",
+  "name" : "Central Lot",
+  "address" : "123 Main St",
+  "slots" : [ {
+    "slotId" : "S001",
+    "slotNumber" : "A-01",
+    "slotType" : "Standard",
+    "pricePerHour" : 5.00,
+    "available" : true
+  }, {
+    "slotId" : "S002",
+    "slotNumber" : "A-02",
+    "slotType" : "EV",
+    "pricePerHour" : 7.50,
+    "available" : true
+  }, {
+    "slotId" : "S003",
+    "slotNumber" : "B-01",
+    "slotType" : "Handicap",
+    "pricePerHour" : 4.00,
+    "available" : false
+  } ],
+  "availableSlots" : [ {
+    "slotId" : "S001",
+    "slotNumber" : "A-01",
+    "slotType" : "Standard",
+    "pricePerHour" : 5.00,
+    "available" : true
+  }, {
+    "slotId" : "S002",
+    "slotNumber" : "A-02",
+    "slotType" : "EV",
+    "pricePerHour" : 7.50,
+    "available" : true
+  } ]
+} ]

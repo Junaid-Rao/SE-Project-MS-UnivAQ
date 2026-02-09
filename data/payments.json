@@ -1,0 +1,22 @@
+[ {
+  "paymentId" : "PAY-bbe8147e",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "Credit Card",
+  "amount" : 10.0,
+  "paymentTime" : "2026-02-09T00:53:47.1468934",
+  "reservationId" : "RES-9166464e"
+}, {
+  "paymentId" : "PAY-e48fb557",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "Credit Card",
+  "amount" : 16.0,
+  "paymentTime" : "2026-02-09T01:16:10.2808316",
+  "reservationId" : "RES-14d672ff"
+}, {
+  "paymentId" : "PAY-ac54a0ff",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "PayPal",
+  "amount" : 15.0,
+  "paymentTime" : "2026-02-09T01:28:55.6325722",
+  "reservationId" : "RES-80f1b53f"
+} ]

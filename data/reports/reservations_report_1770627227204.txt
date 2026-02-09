@@ -1,0 +1,9 @@
+=== Reservations Report ===
+Total: 1
+
+ID: RES-9166464e
+  User: U001 | Slot: S001
+  Start: 2026-02-09 00:53
+  End: 2026-02-09 02:53
+  Status: Confirmed | Total Cost: 10.0
+

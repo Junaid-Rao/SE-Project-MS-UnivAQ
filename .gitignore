@@ -1,0 +1,27 @@
+# Docs (do not push to GitHub)
+docs/
+
+# Maven
+target/
+pom.xml.tag
+pom.releaseBackup
+pom.xml.versionsBackup
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (optional: uncomment if you don't want to commit persisted data)
+# data/
+
+# Logs
+*.log
