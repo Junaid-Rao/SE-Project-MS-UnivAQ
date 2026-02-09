@@ -4,14 +4,7 @@ Software Engineering project — **Iteration 1**. Implements **Use Case 1: Reser
 
 **Exam/presentation notes:** See `docs/EXAM_AND_PRESENTATION_NOTES.md` for OOA/OOD discussion notes, presentation outline, and design pattern logic (for teacher Q&A).
 
-## Requirements (from course)
-
-- **Process**: UP (Unified Process), iterative and incremental; at least 3 iterations (Inception + 2 Elaboration).
-- **Persistence**: No database required for now; **filing** (file-based storage) is used.
-- **Domain layer**: Design limited to Domain layer; persistence accessed via a **PersistentManager** facade (declared, file implementation for Iteration 1).
-- **Reporting**: Data and reports can be produced for documentation and exam presentation.
-
-## Design patterns (testament of design)
+## Design pattern
 
 | Pattern | Where | Purpose |
 |--------|--------|--------|
