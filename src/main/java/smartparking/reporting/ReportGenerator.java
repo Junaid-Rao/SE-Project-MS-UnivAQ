@@ -32,7 +32,7 @@ public class ReportGenerator {
         Path file = dir.resolve("summary_report_" + System.currentTimeMillis() + ".txt");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("=== Smart Parking System - Summary Report (Iteration 1) ===\n\n");
+        sb.append("=== Smart Parking System - Summary Report (Iteration 1 & 2) ===\n\n");
 
         sb.append("--- Users ---\n");
         for (User u : persistence.findAllUsers()) {
@@ -53,6 +53,16 @@ public class ReportGenerator {
         for (Payment p : persistence.findAllPayments()) {
             sb.append("  ").append(p).append("\n");
             sb.append("    ").append(p.generateReceipt()).append("\n");
+        }
+        sb.append("\n--- Charging Stations & Sessions (Iteration 2) ---\n");
+        for (ChargingStation st : persistence.findAllChargingStations()) {
+            sb.append("  ").append(st).append("\n");
+            for (ChargingSlot s : st.getSlots()) {
+                sb.append("    ").append(s).append("\n");
+            }
+        }
+        for (ChargingSession cs : persistence.findAllChargingSessions()) {
+            sb.append("  ").append(cs).append("\n");
         }
 
         Files.writeString(file, sb.toString());

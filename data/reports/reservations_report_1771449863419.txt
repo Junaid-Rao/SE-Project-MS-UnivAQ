@@ -1,0 +1,45 @@
+=== Reservations Report ===
+Total: 7
+
+ID: RES-9166464e
+  User: U001 | Slot: S001
+  Start: 2026-02-09 00:53
+  End: 2026-02-09 02:53
+  Status: Cancelled | Total Cost: 10.0
+
+ID: RES-80f1b53f
+  User: U001 | Slot: S001
+  Start: 2026-02-09 01:28
+  End: 2026-02-09 04:28
+  Status: Cancelled | Total Cost: 15.0
+
+ID: RES-22f591c0
+  User: U001 | Slot: S001
+  Start: 2026-02-12 03:11
+  End: 2026-02-12 06:11
+  Status: Cancelled | Total Cost: 15.0
+
+ID: RES-14d672ff
+  User: U001 | Slot: S003
+  Start: 2026-02-09 03:15
+  End: 2026-02-09 07:15
+  Status: Cancelled | Total Cost: 16.0
+
+ID: RES-d0862277
+  User: U001 | Slot: S002
+  Start: 2026-02-11 14:02
+  End: 2026-02-11 17:02
+  Status: Cancelled | Total Cost: 22.5
+
+ID: RES-4a31d456
+  User: U001 | Slot: S002
+  Start: 2026-02-18 12:52
+  End: 2026-02-18 14:52
+  Status: Cancelled | Total Cost: 15.0
+
+ID: RES-e0fe215d
+  User: U001 | Slot: S002
+  Start: 2026-02-18 13:16
+  End: 2026-02-18 14:16
+  Status: Confirmed | Total Cost: 7.5
+

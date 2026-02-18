@@ -27,6 +27,9 @@ public class FilePersistentManager implements PersistentManager {
     private static final String LOTS_FILE = "parkinglots.json";
     private static final String RESERVATIONS_FILE = "reservations.json";
     private static final String PAYMENTS_FILE = "payments.json";
+    private static final String CHARGING_MODES_FILE = "chargingmodes.json";
+    private static final String CHARGING_STATIONS_FILE = "chargingstations.json";
+    private static final String CHARGING_SESSIONS_FILE = "chargingsessions.json";
 
     private final Path dataPath;
     private final ObjectMapper mapper;
@@ -56,6 +59,9 @@ public class FilePersistentManager implements PersistentManager {
     private Path lotsPath() { return dataPath.resolve(LOTS_FILE); }
     private Path reservationsPath() { return dataPath.resolve(RESERVATIONS_FILE); }
     private Path paymentsPath() { return dataPath.resolve(PAYMENTS_FILE); }
+    private Path chargingModesPath() { return dataPath.resolve(CHARGING_MODES_FILE); }
+    private Path chargingStationsPath() { return dataPath.resolve(CHARGING_STATIONS_FILE); }
+    private Path chargingSessionsPath() { return dataPath.resolve(CHARGING_SESSIONS_FILE); }
 
     private <T> List<T> readList(Path path, TypeReference<List<T>> typeRef) {
         if (!Files.exists(path)) return new ArrayList<>();
@@ -188,5 +194,75 @@ public class FilePersistentManager implements PersistentManager {
             return g;
         });
         return Optional.of(gw);
+    }
+
+    // --- Iteration 2: Charging ---
+    @Override
+    public List<ChargingMode> findAllChargingModes() {
+        return readList(chargingModesPath(), new TypeReference<>() {});
+    }
+
+    @Override
+    public void saveChargingMode(ChargingMode mode) {
+        List<ChargingMode> list = findAllChargingModes();
+        list.removeIf(m -> mode.getModeId() != null && mode.getModeId().equals(m.getModeId()));
+        list.add(mode);
+        try {
+            writeList(chargingModesPath(), list);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save charging mode", e);
+        }
+    }
+
+    @Override
+    public Optional<ChargingStation> findChargingStationById(String stationId) {
+        List<ChargingStation> list = readList(chargingStationsPath(), new TypeReference<>() {});
+        return list.stream().filter(s -> stationId != null && stationId.equals(s.getStationId())).findFirst();
+    }
+
+    @Override
+    public List<ChargingStation> findAllChargingStations() {
+        return readList(chargingStationsPath(), new TypeReference<>() {});
+    }
+
+    @Override
+    public void saveChargingStation(ChargingStation station) {
+        List<ChargingStation> list = findAllChargingStations();
+        list.removeIf(s -> station.getStationId() != null && station.getStationId().equals(s.getStationId()));
+        list.add(station);
+        try {
+            writeList(chargingStationsPath(), list);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save charging station", e);
+        }
+    }
+
+    @Override
+    public Optional<ChargingSession> findChargingSessionById(String sessionId) {
+        List<ChargingSession> list = readList(chargingSessionsPath(), new TypeReference<>() {});
+        return list.stream().filter(s -> sessionId != null && sessionId.equals(s.getSessionId())).findFirst();
+    }
+
+    @Override
+    public List<ChargingSession> findAllChargingSessions() {
+        return readList(chargingSessionsPath(), new TypeReference<>() {});
+    }
+
+    @Override
+    public List<ChargingSession> findChargingSessionsByUserId(String userId) {
+        List<ChargingSession> list = findAllChargingSessions();
+        return list.stream().filter(s -> userId != null && userId.equals(s.getUserId())).toList();
+    }
+
+    @Override
+    public void saveChargingSession(ChargingSession session) {
+        List<ChargingSession> list = findAllChargingSessions();
+        list.removeIf(s -> session.getSessionId() != null && session.getSessionId().equals(s.getSessionId()));
+        list.add(session);
+        try {
+            writeList(chargingSessionsPath(), list);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save charging session", e);
+        }
     }
 }

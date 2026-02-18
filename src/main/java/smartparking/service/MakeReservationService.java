@@ -135,6 +135,33 @@ public class MakeReservationService {
         return paymentRegistry.getAvailableMethodNames();
     }
 
+    /** Auto-deallocate: mark expired reservations (endTime passed) as Expired and release their slots. */
+    public int releaseExpiredReservations() {
+        LocalDateTime now = LocalDateTime.now();
+        int released = 0;
+        for (Reservation r : persistence.findAllReservations()) {
+            if (!Reservation.STATUS_CONFIRMED.equals(r.getReservationStatus())) continue;
+            if (r.getEndTime() == null || !r.getEndTime().isBefore(now)) continue;
+            r.setReservationStatus(Reservation.STATUS_EXPIRED);
+            persistence.saveReservation(r);
+            ParkingSlot slot = null;
+            ParkingLot owningLot = null;
+            for (ParkingLot lot : persistence.findAllParkingLots()) {
+                slot = lot.getSlotById(r.getSlotId());
+                if (slot != null) {
+                    owningLot = lot;
+                    break;
+                }
+            }
+            if (slot != null) {
+                slot.release();
+                if (owningLot != null) persistence.saveParkingLot(owningLot);
+                released++;
+            }
+        }
+        return released;
+    }
+
     public static final class MakeReservationResult {
         private final boolean success;
         private final String message;

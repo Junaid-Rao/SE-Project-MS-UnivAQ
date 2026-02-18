@@ -1,11 +1,14 @@
 package smartparking;
 
+import smartparking.controller.ChargingController;
 import smartparking.flow.AbstractBookingFlow;
+import smartparking.flow.ChargingFlow;
 import smartparking.flow.InteractiveBookingFlow;
 import smartparking.model.*;
 import smartparking.persistence.FilePersistentManager;
 import smartparking.persistence.PersistentManager;
 import smartparking.reporting.ReportGenerator;
+import smartparking.service.ChargingService;
 import smartparking.service.MakeReservationService;
 import smartparking.strategy.DefaultPaymentStrategyRegistry;
 import smartparking.strategy.PaymentStrategyRegistry;
@@ -19,9 +22,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Application entry point — interactive Smart Parking System (Iteration 1).
- * Design patterns: Facade (BookingFacade), Strategy (payment), Command (make/cancel reservation),
- * Template Method (booking flow), Builder (BookingRequest). Persistence: filing only.
+ * Application entry point — Smart Parking System (Iteration 1 + Iteration 2).
+ * Iteration 1: Reserve Parking Slot. Iteration 2: Charge Vehicle.
+ * Design patterns: Facade (BookingFacade), ChargingController, Strategy (payment), Command, Template Method, Builder.
  */
 public class Application {
 
@@ -35,16 +38,23 @@ public class Application {
         MakeReservationService makeReservationService = new MakeReservationService(persistence, paymentRegistry);
         BookingFacade facade = new BookingFacade(persistence, makeReservationService);
 
+        ChargingService chargingService = new ChargingService(persistence, gateway);
+        ChargingController chargingController = new ChargingController(chargingService);
+
         ConsoleInput console = new SystemConsoleInput();
 
-        console.println("=== Smart Parking System — Iteration 1 (Use Case: Reserve Parking Slot) ===");
-        console.println("Interactive booking: select user → select slot → confirm → pay.\n");
+        console.println("=== Smart Parking System — Iteration 1 & 2 ===");
+        console.println("Use Case 1: Reserve Parking Slot | Use Case 2: Charge Vehicle\n");
 
-        mainMenuLoop(facade, persistence, console);
+        mainMenuLoop(facade, chargingController, persistence, console);
     }
 
-    private static void mainMenuLoop(BookingFacade facade, PersistentManager persistence, ConsoleInput console) {
+    private static void mainMenuLoop(BookingFacade facade, ChargingController chargingController,
+                                    PersistentManager persistence, ConsoleInput console) {
         while (true) {
+            facade.releaseExpiredReservations();
+            chargingController.releaseExpiredChargingSessions();
+
             console.println("\n--- Main Menu ---");
             int choice = console.selectOption("Choose an option:",
                     List.of(
@@ -52,6 +62,9 @@ public class Application {
                             "View available slots",
                             "View my reservations",
                             "Cancel a reservation",
+                            "Charge Vehicle (Use Case 2)",
+                            "Stop Charging",
+                            "View my charging sessions",
                             "Generate report (file)",
                             "Exit"
                     ), false);
@@ -61,8 +74,11 @@ public class Application {
                 case 2 -> showAvailableSlots(facade, console);
                 case 3 -> showMyReservations(facade, console);
                 case 4 -> cancelReservation(facade, console);
-                case 5 -> generateReport(persistence, console);
-                case 6 -> {
+                case 5 -> runChargingFlow(facade, chargingController, console);
+                case 6 -> stopCharging(chargingController, persistence, facade, console);
+                case 7 -> showMyChargingSessions(persistence, facade, console);
+                case 8 -> generateReport(persistence, console);
+                case 9 -> {
                     console.println("Goodbye.");
                     return;
                 }
@@ -128,7 +144,8 @@ public class Application {
 
     private static void cancelReservation(BookingFacade facade, ConsoleInput console) {
         List<Reservation> all = facade.getAllReservations().stream()
-                .filter(r -> !Reservation.STATUS_CANCELLED.equals(r.getReservationStatus()))
+                .filter(r -> Reservation.STATUS_CONFIRMED.equals(r.getReservationStatus())
+                        || Reservation.STATUS_PENDING.equals(r.getReservationStatus()))
                 .toList();
         if (all.isEmpty()) {
             console.println("No active reservations to cancel.");
@@ -149,6 +166,73 @@ public class Application {
         }
     }
 
+    private static void runChargingFlow(BookingFacade facade, ChargingController chargingController, ConsoleInput console) {
+        ChargingFlow flow = new ChargingFlow(chargingController, facade, console);
+        ChargingFlow.ChargingFlowResult result = flow.runFlow();
+        if (result.isSuccess()) {
+            console.println("\nSUCCESS: " + result.getMessage());
+            if (result.getSession() != null) console.println("  Session: " + result.getSession());
+            if (result.getPayment() != null) console.println("  Payment: " + result.getPayment());
+        } else if (result.isCancelled()) {
+            console.println("\nCancelled: " + result.getMessage());
+        } else {
+            console.println("\nFAILED: " + result.getMessage());
+        }
+    }
+
+    private static void stopCharging(ChargingController chargingController, PersistentManager persistence,
+                                    BookingFacade facade, ConsoleInput console) {
+        List<User> users = facade.getUsers();
+        if (users.isEmpty()) {
+            console.println("No users.");
+            return;
+        }
+        List<ChargingSession> active = persistence.findAllChargingSessions().stream()
+                .filter(s -> ChargingSession.SESSION_STATUS_ACTIVE.equals(s.getSessionStatus()))
+                .toList();
+        if (active.isEmpty()) {
+            console.println("No active charging sessions to stop.");
+            return;
+        }
+        List<String> options = new java.util.ArrayList<>();
+        for (ChargingSession s : active) {
+            options.add(s.getSessionId() + " | User: " + s.getUserId() + " | Slot: " + s.getSlotId());
+        }
+        int choice = console.selectOption("Select session to stop:", options, true);
+        if (choice == 0) return;
+        String sessionId = active.get(choice - 1).getSessionId();
+        var result = chargingController.stopCharging(sessionId);
+        if (result.isSuccess()) {
+            console.println("Stopped. End time: " + result.getEndTime() + ", Energy used: " + result.getEnergyUsedKwh() + " kWh");
+        } else {
+            console.println("Failed: " + result.getMessage());
+        }
+    }
+
+    private static void showMyChargingSessions(PersistentManager persistence, BookingFacade facade, ConsoleInput console) {
+        List<User> users = facade.getUsers();
+        if (users.isEmpty()) {
+            console.println("No users.");
+            return;
+        }
+        List<String> options = new java.util.ArrayList<>();
+        for (User u : users) {
+            options.add(u.getUserId() + " - " + u.getName());
+        }
+        int userChoice = console.selectOption("Select user to view charging sessions:", options, true);
+        if (userChoice == 0) return;
+        String userId = users.get(userChoice - 1).getUserId();
+        List<ChargingSession> sessions = persistence.findChargingSessionsByUserId(userId);
+        console.println("\n--- Charging sessions for " + userId + " ---");
+        if (sessions.isEmpty()) {
+            console.println("No charging sessions.");
+            return;
+        }
+        for (ChargingSession s : sessions) {
+            console.println("  " + s);
+        }
+    }
+
     private static void generateReport(PersistentManager persistence, ConsoleInput console) {
         ReportGenerator reportGenerator = new ReportGenerator(persistence);
         try {
@@ -161,16 +245,34 @@ public class Application {
     }
 
     private static void seedDataIfNeeded(PersistentManager p) {
-        if (!p.findAllUsers().isEmpty()) return;
+        if (p.findAllUsers().isEmpty()) {
+            User user = new User("U001", "Junaid", "junaid.aslam@student.univaq.it", "+393277766533", "pass1");
+            user.register();
+            p.saveUser(user);
 
-        User user = new User("U001", "Junaid", "junaid.aslam@student.univaq.it", "+393277766533", "pass1");
-        user.register();
-        p.saveUser(user);
+            ParkingLot lot = new ParkingLot("L001", "Central Lot", "123 Main St");
+            lot.getSlots().add(new ParkingSlot("S001", "A-01", "Standard", new BigDecimal("5.00")));
+            lot.getSlots().add(new ParkingSlot("S002", "A-02", "EV", new BigDecimal("7.50")));
+            lot.getSlots().add(new ParkingSlot("S003", "B-01", "Handicap", new BigDecimal("4.00")));
+            p.saveParkingLot(lot);
+        }
 
-        ParkingLot lot = new ParkingLot("L001", "Central Lot", "123 Main St");
-        lot.getSlots().add(new ParkingSlot("S001", "A-01", "Standard", new BigDecimal("5.00")));
-        lot.getSlots().add(new ParkingSlot("S002", "A-02", "EV", new BigDecimal("7.50")));
-        lot.getSlots().add(new ParkingSlot("S003", "B-01", "Handicap", new BigDecimal("4.00")));
-        p.saveParkingLot(lot);
+        if (p.findAllChargingModes().isEmpty()) {
+            p.saveChargingMode(new ChargingMode("M1", "normal", new BigDecimal("0.25"), 7.0));
+            p.saveChargingMode(new ChargingMode("M2", "fast", new BigDecimal("0.40"), 22.0));
+        }
+        if (p.findAllChargingStations().isEmpty()) {
+            ChargingStation station = new ChargingStation("ST1", "Central EV Station", "123 Main St");
+            ChargingMode normal = p.findAllChargingModes().stream().filter(m -> "normal".equalsIgnoreCase(m.getModeType())).findFirst().orElse(null);
+            ChargingMode fast = p.findAllChargingModes().stream().filter(m -> "fast".equalsIgnoreCase(m.getModeType())).findFirst().orElse(null);
+            ChargingSlot cs1 = new ChargingSlot("CS1", "1", "ST1");
+            if (normal != null) cs1.getSupportedModes().add(normal);
+            if (fast != null) cs1.getSupportedModes().add(fast);
+            ChargingSlot cs2 = new ChargingSlot("CS2", "2", "ST1");
+            if (normal != null) cs2.getSupportedModes().add(normal);
+            station.getSlots().add(cs1);
+            station.getSlots().add(cs2);
+            p.saveChargingStation(station);
+        }
     }
 }

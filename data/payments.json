@@ -4,19 +4,54 @@
   "paymentMethod" : "Credit Card",
   "amount" : 10.0,
   "paymentTime" : "2026-02-09T00:53:47.1468934",
-  "reservationId" : "RES-9166464e"
+  "reservationId" : "RES-9166464e",
+  "chargingSessionId" : null
 }, {
   "paymentId" : "PAY-e48fb557",
   "paymentStatus" : "Success",
   "paymentMethod" : "Credit Card",
   "amount" : 16.0,
   "paymentTime" : "2026-02-09T01:16:10.2808316",
-  "reservationId" : "RES-14d672ff"
+  "reservationId" : "RES-14d672ff",
+  "chargingSessionId" : null
 }, {
   "paymentId" : "PAY-ac54a0ff",
   "paymentStatus" : "Success",
   "paymentMethod" : "PayPal",
   "amount" : 15.0,
   "paymentTime" : "2026-02-09T01:28:55.6325722",
-  "reservationId" : "RES-80f1b53f"
+  "reservationId" : "RES-80f1b53f",
+  "chargingSessionId" : null
+}, {
+  "paymentId" : "PAY-88923e2c",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "Credit Card",
+  "amount" : 22.5,
+  "paymentTime" : "2026-02-11T14:02:53.2740076",
+  "reservationId" : "RES-d0862277",
+  "chargingSessionId" : null
+}, {
+  "paymentId" : "PAY-8eda24a6",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "Credit Card",
+  "amount" : 15.0,
+  "paymentTime" : "2026-02-12T01:12:09.4887499",
+  "reservationId" : "RES-22f591c0",
+  "chargingSessionId" : null
+}, {
+  "paymentId" : "PAY-10d45093",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "Credit Card",
+  "amount" : 15.0,
+  "paymentTime" : "2026-02-18T12:52:21.1668136",
+  "reservationId" : "RES-4a31d456",
+  "chargingSessionId" : null
+}, {
+  "paymentId" : "PAY-baa00244",
+  "paymentStatus" : "Success",
+  "paymentMethod" : "Credit Card",
+  "amount" : 7.5,
+  "paymentTime" : "2026-02-18T13:16:40.3985977",
+  "reservationId" : "RES-e0fe215d",
+  "chargingSessionId" : null
 } ]

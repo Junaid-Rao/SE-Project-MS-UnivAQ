@@ -17,6 +17,7 @@ public class Payment {
     private BigDecimal amount;
     private LocalDateTime paymentTime;
     private String reservationId;
+    private String chargingSessionId;  // Iteration 2: link payment to charging session
 
     public Payment() {
         this.amount = BigDecimal.ZERO;
@@ -34,6 +35,8 @@ public class Payment {
     public void setPaymentTime(LocalDateTime paymentTime) { this.paymentTime = paymentTime; }
     public String getReservationId() { return reservationId; }
     public void setReservationId(String reservationId) { this.reservationId = reservationId; }
+    public String getChargingSessionId() { return chargingSessionId; }
+    public void setChargingSessionId(String chargingSessionId) { this.chargingSessionId = chargingSessionId; }
 
     /**
      * Process payment via gateway. Gateway is injected by service layer.

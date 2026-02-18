@@ -1,0 +1,47 @@
+=== Smart Parking System - Summary Report (Iteration 1 & 2) ===
+
+--- Users ---
+  User{userId='U001', name='Junaid', email='junaid.aslam@student.univaq.it'}
+
+--- Parking Lots ---
+  ParkingLot{lotId='L001', name='Central Lot', address='123 Main St', slots=3}
+    ParkingSlot{slotId='S001', slotNumber='A-01', type='Standard', pricePerHour=5.00, available=true}
+    ParkingSlot{slotId='S002', slotNumber='A-02', type='EV', pricePerHour=7.50, available=false}
+    ParkingSlot{slotId='S003', slotNumber='B-01', type='Handicap', pricePerHour=4.00, available=true}
+
+--- Reservations ---
+  Reservation{id='RES-9166464e', slotId='S001', userId='U001', 2026-02-09T00:53:47.107340200 to 2026-02-09T02:53:47.107340200, status='Cancelled', totalCost=10.0}
+  Reservation{id='RES-80f1b53f', slotId='S001', userId='U001', 2026-02-09T01:28:46.818171200 to 2026-02-09T04:28:46.818171200, status='Cancelled', totalCost=15.0}
+  Reservation{id='RES-22f591c0', slotId='S001', userId='U001', 2026-02-12T03:11:23.509110900 to 2026-02-12T06:11:23.509110900, status='Cancelled', totalCost=15.0}
+  Reservation{id='RES-14d672ff', slotId='S003', userId='U001', 2026-02-09T03:15:43.938620600 to 2026-02-09T07:15:43.938620600, status='Cancelled', totalCost=16.0}
+  Reservation{id='RES-d0862277', slotId='S002', userId='U001', 2026-02-11T14:02:38.059507200 to 2026-02-11T17:02:38.059507200, status='Cancelled', totalCost=22.5}
+  Reservation{id='RES-4a31d456', slotId='S002', userId='U001', 2026-02-18T12:52:00.278542600 to 2026-02-18T14:52:00.278542600, status='Cancelled', totalCost=15.0}
+  Reservation{id='RES-e0fe215d', slotId='S002', userId='U001', 2026-02-18T13:16:32.219577800 to 2026-02-18T14:16:32.219577800, status='Confirmed', totalCost=7.5}
+
+--- Payments ---
+  Payment{paymentId='PAY-bbe8147e', amount=10.0, method='Credit Card', status='Success', time=2026-02-09T00:53:47.146893400}
+    Receipt --- PaymentId: PAY-bbe8147e | Amount: 10.0 | Method: Credit Card | Time: 2026-02-09T00:53:47.146893400 | Status: Success
+  Payment{paymentId='PAY-e48fb557', amount=16.0, method='Credit Card', status='Success', time=2026-02-09T01:16:10.280831600}
+    Receipt --- PaymentId: PAY-e48fb557 | Amount: 16.0 | Method: Credit Card | Time: 2026-02-09T01:16:10.280831600 | Status: Success
+  Payment{paymentId='PAY-ac54a0ff', amount=15.0, method='PayPal', status='Success', time=2026-02-09T01:28:55.632572200}
+    Receipt --- PaymentId: PAY-ac54a0ff | Amount: 15.0 | Method: PayPal | Time: 2026-02-09T01:28:55.632572200 | Status: Success
+  Payment{paymentId='PAY-88923e2c', amount=22.5, method='Credit Card', status='Success', time=2026-02-11T14:02:53.274007600}
+    Receipt --- PaymentId: PAY-88923e2c | Amount: 22.5 | Method: Credit Card | Time: 2026-02-11T14:02:53.274007600 | Status: Success
+  Payment{paymentId='PAY-8eda24a6', amount=15.0, method='Credit Card', status='Success', time=2026-02-12T01:12:09.488749900}
+    Receipt --- PaymentId: PAY-8eda24a6 | Amount: 15.0 | Method: Credit Card | Time: 2026-02-12T01:12:09.488749900 | Status: Success
+  Payment{paymentId='PAY-10d45093', amount=15.0, method='Credit Card', status='Success', time=2026-02-18T12:52:21.166813600}
+    Receipt --- PaymentId: PAY-10d45093 | Amount: 15.0 | Method: Credit Card | Time: 2026-02-18T12:52:21.166813600 | Status: Success
+  Payment{paymentId='PAY-baa00244', amount=7.5, method='Credit Card', status='Success', time=2026-02-18T13:16:40.398597700}
+    Receipt --- PaymentId: PAY-baa00244 | Amount: 7.5 | Method: Credit Card | Time: 2026-02-18T13:16:40.398597700 | Status: Success
+
+--- Charging Stations & Sessions (Iteration 2) ---
+  ChargingSession{sessionId='CHG-652a1368', userId='U001', slotId='null', status='completed', start=2026-02-18T12:54:55.373905700, end=2026-02-18T12:56:46.596393900, energy=0.50 kWh}
+  ChargingSession{sessionId='CHG-fc3557a3', userId='U001', slotId='null', status='completed', start=2026-02-18T12:55:19.042217900, end=2026-02-18T12:57:01.703920700, energy=0.50 kWh}
+  ChargingSession{sessionId='CHG-04632777', userId='U001', slotId='null', status='completed', start=2026-02-18T12:56:26.984649100, end=2026-02-18T13:06:46.795173500, energy=5.00 kWh}
+  ChargingSession{sessionId='CHG-a7a66579', userId='U001', slotId='null', status='completed', start=2026-02-18T13:03:45.712581700, end=2026-02-18T13:06:53.665447800, energy=1.50 kWh}
+  ChargingSession{sessionId='CHG-f2f30483', userId='U001', slotId='null', status='completed', start=2026-02-18T13:06:13.622374200, end=2026-02-18T13:06:55.260460500, energy=0.00 kWh}
+  ChargingSession{sessionId='CHG-bf7648c9', userId='U001', slotId='null', status='completed', start=2026-02-18T13:07:07.756701900, end=2026-02-18T13:17:28.532413300, energy=5.00 kWh}
+  ChargingSession{sessionId='CHG-8f1a385b', userId='U001', slotId='null', status='completed', start=2026-02-18T13:17:10.249043200, end=2026-02-18T13:17:30.332604900, energy=0.00 kWh}
+  ChargingSession{sessionId='CHG-a7db1574', userId='U001', slotId='null', status='completed', start=2026-02-18T13:17:37.366388100, end=2026-02-18T13:17:49.549317300, energy=0.00 kWh}
+  ChargingSession{sessionId='CHG-efa974b3', userId='U001', slotId='null', status='completed', start=2026-02-18T13:17:51.949860800, end=2026-02-18T13:24:11.693345200, energy=3.00 kWh}
+  ChargingSession{sessionId='CHG-3b58d90f', userId='U001', slotId='null', status='active', start=2026-02-18T13:24:14.531581200, end=null, energy=0.00 kWh}

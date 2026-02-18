@@ -13,6 +13,7 @@ public class Reservation {
     public static final String STATUS_PENDING = "Pending";
     public static final String STATUS_CONFIRMED = "Confirmed";
     public static final String STATUS_CANCELLED = "Cancelled";
+    public static final String STATUS_EXPIRED = "Expired";
 
     private String reservationId;
     private LocalDateTime startTime;

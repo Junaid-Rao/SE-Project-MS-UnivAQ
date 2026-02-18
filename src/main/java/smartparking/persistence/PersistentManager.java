@@ -35,4 +35,15 @@ public interface PersistentManager {
 
     // --- Gateway (in-memory or single config for demo) ---
     Optional<PaymentGateway> getDefaultPaymentGateway();
+
+    // --- Iteration 2: Charging ---
+    List<ChargingMode> findAllChargingModes();
+    void saveChargingMode(ChargingMode mode);
+    Optional<ChargingStation> findChargingStationById(String stationId);
+    List<ChargingStation> findAllChargingStations();
+    void saveChargingStation(ChargingStation station);
+    Optional<ChargingSession> findChargingSessionById(String sessionId);
+    List<ChargingSession> findAllChargingSessions();
+    List<ChargingSession> findChargingSessionsByUserId(String userId);
+    void saveChargingSession(ChargingSession session);
 }

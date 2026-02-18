@@ -80,4 +80,9 @@ public class BookingFacade {
     public CommandResult cancelReservation(String reservationId) {
         return createCancelReservationCommand(reservationId).execute();
     }
+
+    /** Auto-deallocate expired reservations (endTime passed): mark Expired and release slots. Returns count released. */
+    public int releaseExpiredReservations() {
+        return makeReservationService.releaseExpiredReservations();
+    }
 }

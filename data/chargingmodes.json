@@ -1,0 +1,11 @@
+[ {
+  "modeId" : "M1",
+  "modeType" : "normal",
+  "pricePerUnit" : 0.25,
+  "chargingSpeed" : 7.0
+}, {
+  "modeId" : "M2",
+  "modeType" : "fast",
+  "pricePerUnit" : 0.40,
+  "chargingSpeed" : 22.0
+} ]

@@ -1,0 +1,36 @@
+[ {
+  "stationId" : "ST1",
+  "stationName" : "Central EV Station",
+  "location" : "123 Main St",
+  "stationStatus" : "active",
+  "slots" : [ {
+    "slotId" : "CS1",
+    "slotNumber" : "1",
+    "status" : "available",
+    "stationId" : "ST1",
+    "supportedModes" : [ {
+      "modeId" : "M1",
+      "modeType" : "normal",
+      "pricePerUnit" : 0.25,
+      "chargingSpeed" : 7.0
+    }, {
+      "modeId" : "M2",
+      "modeType" : "fast",
+      "pricePerUnit" : 0.40,
+      "chargingSpeed" : 22.0
+    } ],
+    "available" : true
+  }, {
+    "slotId" : "CS2",
+    "slotNumber" : "2",
+    "status" : "available",
+    "stationId" : "ST1",
+    "supportedModes" : [ {
+      "modeId" : "M1",
+      "modeType" : "normal",
+      "pricePerUnit" : 0.25,
+      "chargingSpeed" : 7.0
+    } ],
+    "available" : true
+  } ]
+} ]

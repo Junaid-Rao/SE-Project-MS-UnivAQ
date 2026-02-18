@@ -30,6 +30,11 @@ public class PaymentGateway {
         return amount > 0;
     }
 
+    /** Authorize payment (Iteration 2 - Charge Vehicle). Returns true if approved, false if denied. */
+    public boolean authorizePayment(double amount) {
+        return processTransaction(amount);
+    }
+
     public void disconnect() {
         status = "Inactive";
     }
