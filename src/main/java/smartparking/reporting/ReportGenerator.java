@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Reporting perspective: generate text reports from persisted data.
+ * Summary report includes users, parking lots, reservations, payments, and (Iteration 2) charging stations and sessions.
  * Outputs to data/reports/ for iteration documentation and exam presentation.
  */
 public class ReportGenerator {
