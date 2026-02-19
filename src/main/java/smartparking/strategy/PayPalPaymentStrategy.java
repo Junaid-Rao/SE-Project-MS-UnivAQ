@@ -7,6 +7,7 @@ import java.util.Optional;
 
 /**
  * Concrete strategy: PayPal payment. Delegates to PaymentGateway (same gateway, different "method" for reporting).
+ * Configured to simulate an unsuccessful payment scenario for demo/exam (sequence diagram alt [payment failed]).
  */
 public class PayPalPaymentStrategy implements PaymentStrategy {
 
@@ -23,6 +24,7 @@ public class PayPalPaymentStrategy implements PaymentStrategy {
 
     @Override
     public boolean processPayment(BigDecimal amount) {
-        return gateway.map(g -> g.processTransaction(amount.doubleValue())).orElse(false);
+        // Simulate unsuccessful payment for demo: allows testing "payment failure notification" path (SSD).
+        return false;
     }
 }

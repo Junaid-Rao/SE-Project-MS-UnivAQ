@@ -7,7 +7,7 @@
     "slotNumber" : "A-01",
     "slotType" : "Standard",
     "pricePerHour" : 5.00,
-    "available" : true
+    "available" : false
   }, {
     "slotId" : "S002",
     "slotNumber" : "A-02",
@@ -19,19 +19,7 @@
     "slotNumber" : "B-01",
     "slotType" : "Handicap",
     "pricePerHour" : 4.00,
-    "available" : true
+    "available" : false
   } ],
-  "availableSlots" : [ {
-    "slotId" : "S001",
-    "slotNumber" : "A-01",
-    "slotType" : "Standard",
-    "pricePerHour" : 5.00,
-    "available" : true
-  }, {
-    "slotId" : "S003",
-    "slotNumber" : "B-01",
-    "slotType" : "Handicap",
-    "pricePerHour" : 4.00,
-    "available" : true
-  } ]
+  "availableSlots" : [ ]
 } ]

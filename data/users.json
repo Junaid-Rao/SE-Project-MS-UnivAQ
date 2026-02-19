@@ -1,1 +1,5 @@
-[{"userId":"U001","name":"Junaid","email":"junaid.aslam@student.univaq.it","phoneNumber":"+393277766533","password":"pass1","reservations":[]}]
+[
+  {"userId":"U001","name":"Junaid","email":"junaid.aslam@student.univaq.it","phoneNumber":"+393277766533","password":"pass1", "reservations":[]},
+  {"userId":"U002","name":"Arfan","email":"muhd.arfan@student.univaq.it","phoneNumber":"+545465465465","password":"pass1", "reservations":[]}
+
+]

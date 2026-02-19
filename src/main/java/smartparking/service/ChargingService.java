@@ -20,6 +20,12 @@ public class ChargingService {
     /** Default charging window: after this time from start, session is auto-ended and slot released. */
     public static final int DEFAULT_CHARGING_DURATION_HOURS = 2;
 
+    /** Rewards policy: base points per successful charge; bonus for loyal customers. */
+    public static final int REWARD_BASE_POINTS = 10;
+    public static final int REWARD_LOYAL_BONUS_POINTS = 5;
+    /** Loyal customer: has at least this many completed charging sessions or confirmed reservations (combined). */
+    public static final int LOYAL_CUSTOMER_THRESHOLD = 2;
+
     private final PersistentManager persistence;
     private final PaymentGateway paymentGateway;
 
@@ -66,7 +72,9 @@ public class ChargingService {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             return ProcessPaymentResult.failure("Invalid amount");
         }
-        boolean approved = paymentGateway.authorizePayment(amount.doubleValue());
+        // Simulate unsuccessful payment for PayPal (demo: SSD alt [payment failed] path).
+        boolean approved = !"PayPal".equalsIgnoreCase(paymentMethod != null ? paymentMethod.trim() : "")
+                && paymentGateway.authorizePayment(amount.doubleValue());
         if (!approved) {
             return ProcessPaymentResult.failure("Payment denied by gateway.");
         }
@@ -99,8 +107,32 @@ public class ChargingService {
         }
 
         String receipt = payment.generateReceipt();
-        String reward = "10 reward points added for this charge.";
+        String userId = sessionOpt.map(ChargingSession::getUserId).orElse(null);
+        String reward = buildRewardMessage(userId);
         return ProcessPaymentResult.success(payment, receipt, reward);
+    }
+
+    /** Build reward message from loyalty policy: base points + bonus for loyal customers. */
+    private String buildRewardMessage(String userId) {
+        int points = REWARD_BASE_POINTS;
+        boolean loyal = isLoyalCustomer(userId);
+        if (loyal) {
+            points += REWARD_LOYAL_BONUS_POINTS;
+            return points + " reward points added (" + REWARD_LOYAL_BONUS_POINTS + " bonus for loyal customer).";
+        }
+        return points + " reward points added for this charge.";
+    }
+
+    /** Loyal customer: has at least LOYAL_CUSTOMER_THRESHOLD completed charging sessions or confirmed reservations. */
+    private boolean isLoyalCustomer(String userId) {
+        if (userId == null) return false;
+        long completedSessions = persistence.findChargingSessionsByUserId(userId).stream()
+                .filter(s -> ChargingSession.SESSION_STATUS_COMPLETED.equals(s.getSessionStatus()))
+                .count();
+        long confirmedReservations = persistence.findReservationsByUserId(userId).stream()
+                .filter(r -> Reservation.STATUS_CONFIRMED.equals(r.getReservationStatus()))
+                .count();
+        return (completedSessions + confirmedReservations) >= LOYAL_CUSTOMER_THRESHOLD;
     }
 
     /** 5. stopCharging(sessionId) — end session, return end time and energy used. */

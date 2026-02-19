@@ -100,6 +100,10 @@ Reservations past their **end time** are auto-marked **Expired** and slots relea
 
 **Domain model (Iteration 2):** Customer (User), ChargingMode, ChargingStation, ChargingSlot, ChargingSession, Payment (extended with `chargingSessionId`). Sessions have an optional **scheduledEndTime** (default 2 hours from start); when that time is passed, the session is auto-completed and the charging slot released on the next menu return.
 
+**Payment and rewards:**
+- **Unsuccessful payment (demo):** **PayPal** is configured to simulate a failed payment (SSD alt [payment failed]). Use **Credit Card** for a successful payment in both Book a parking slot and Charge Vehicle.
+- **Loyalty rewards:** After a successful charge, the driver receives reward points. **Loyal customers** (at least 2 completed charging sessions or 2 confirmed reservations) get a bonus (e.g. 10 + 5 points). Others get the base points (10). Policy constants: `ChargingService.REWARD_BASE_POINTS`, `REWARD_LOYAL_BONUS_POINTS`, `LOYAL_CUSTOMER_THRESHOLD`.
+
 ## Data persistence (filing)
 
 - **Location**: `data/` (created on first run).
