@@ -10,4 +10,16 @@
   "modeType" : null,
   "energyUsedKwh" : 0.5,
   "scheduledEndTime" : null
+}, {
+  "sessionId" : "CHG-c36c5675",
+  "startTime" : "2026-02-20T01:46:09.3806762",
+  "endTime" : "2026-02-20T01:47:32.0564389",
+  "totalAmount" : 0.0,
+  "sessionStatus" : "completed",
+  "pricePerUnit" : 0,
+  "userId" : "U001",
+  "slotId" : null,
+  "modeType" : null,
+  "energyUsedKwh" : 0.5,
+  "scheduledEndTime" : null
 } ]

@@ -1,12 +1,4 @@
 [ {
-  "reservationId" : "RES-f5a5353d",
-  "startTime" : "2026-02-19T07:31:59.6774074",
-  "endTime" : "2026-02-19T08:31:59.6774074",
-  "reservationStatus" : "Confirmed",
-  "totalCost" : 5.0,
-  "userId" : "U001",
-  "slotId" : "S001"
-}, {
   "reservationId" : "RES-598e8775",
   "startTime" : "2026-02-19T06:22:08.9422558",
   "endTime" : "2026-02-19T15:22:08.9422558",
@@ -15,10 +7,18 @@
   "userId" : "U002",
   "slotId" : "S003"
 }, {
+  "reservationId" : "RES-f5a5353d",
+  "startTime" : "2026-02-19T07:31:59.6774074",
+  "endTime" : "2026-02-19T08:31:59.6774074",
+  "reservationStatus" : "Expired",
+  "totalCost" : 5.0,
+  "userId" : "U001",
+  "slotId" : "S001"
+}, {
   "reservationId" : "RES-3df79778",
   "startTime" : "2026-02-19T07:32:34.3718837",
   "endTime" : "2026-02-19T09:32:34.3718837",
-  "reservationStatus" : "Confirmed",
+  "reservationStatus" : "Expired",
   "totalCost" : 8.0,
   "userId" : "U001",
   "slotId" : "S003"
